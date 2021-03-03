@@ -1,5 +1,7 @@
 use pyo3::prelude::*;
 
+use crate::common::sho::Sho;
+
 use zkgroup;
 
 //TODO:Serialize, Deserialize, Default, PartialEq
@@ -33,23 +35,21 @@ pub struct KeyPair {
     pub state: zkgroup::crypto::credentials::KeyPair,
 }
 
-// TODO: Requires Sho transcript
-// #[pymethods]
-// impl KeyPair {
-//     #[staticmethod]
-//     fn generate() -> SystemParams {
-//         SystemParams{
-//             state: zkgroup::crypto::credentials::SystemParams::generate()
-//         }
-//     }
+#[pymethods]
+impl KeyPair {
+    #[staticmethod]
+    fn generate(sho: &mut Sho, num_attributes: usize) -> Self {
+        KeyPair{
+            state: zkgroup::crypto::credentials::KeyPair::generate(&mut sho.state, num_attributes)
+        }
+    }
 
-//     #[staticmethod]
-//     fn get_hardcoded() -> SystemParams {
-//         SystemParams{
-//             state: zkgroup::crypto::credentials::SystemParams::get_hardcoded()
-//         }
-//     }
-// }
+    fn get_public_key(&self) -> PublicKey {
+        PublicKey{
+            state: self.state.get_public_key()
+        }
+    }
+}
 
 // TODO: PartialEq, Serialize, Deserialize
 #[pyclass]

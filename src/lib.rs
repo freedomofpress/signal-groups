@@ -1,5 +1,6 @@
 use pyo3::prelude::*;
 
+mod common;
 mod crypto;
 
 /// Signal groups in Python
