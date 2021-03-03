@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 
 use crate::common::sho::Sho;
+use crate::crypto::uid_struct::UidStruct;
 
 use zkgroup;
 
@@ -49,6 +50,12 @@ impl KeyPair {
             state: self.state.get_public_key()
         }
     }
+
+    fn create_auth_credential(&self, uid: UidStruct, redemption_time: u32, sho: &mut Sho) -> AuthCredential {
+        AuthCredential{
+            state: self.state.create_auth_credential(uid.state, redemption_time, &mut sho.state)
+        }
+    }
 }
 
 // TODO: PartialEq, Serialize, Deserialize
@@ -69,20 +76,20 @@ pub struct AuthCredential {
 #[pyclass]
 #[derive(Copy, Clone)]
 pub struct ProfileKeyCredential {
-    pub state: zkgroup::crypto::credentials::AuthCredential,
+    pub state: zkgroup::crypto::credentials::ProfileKeyCredential,
 }
 
 // TODO: PartialEq, Serialize, Deserialize
 #[pyclass]
 #[derive(Copy, Clone)]
 pub struct BlindedProfileKeyCredentialWithSecretNonce {
-    pub state: zkgroup::crypto::credentials::AuthCredential,
+    pub state: zkgroup::crypto::credentials::BlindedProfileKeyCredentialWithSecretNonce,
 }
 
 // TODO: PartialEq, Serialize, Deserialize
 #[pyclass]
 #[derive(Copy, Clone)]
 pub struct BlindedProfileKeyCredential {
-    pub state: zkgroup::crypto::credentials::AuthCredential,
+    pub state: zkgroup::crypto::credentials::BlindedProfileKeyCredential,
 }
 

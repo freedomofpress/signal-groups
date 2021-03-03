@@ -1,10 +1,12 @@
 use pyo3::prelude::*;
 
 pub mod credentials;
+pub mod uid_struct;
 
 #[pymodule]
 fn crypto(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<credentials::SystemParams>()?;
+    module.add_class::<uid_struct::UidStruct>()?;
     Ok(())
 }
 
@@ -15,4 +17,3 @@ fn crypto(_py: Python, module: &PyModule) -> PyResult<()> {
 // pub mod proofs;
 // pub mod signature;
 // pub mod uid_encryption;
-// pub mod uid_struct;
