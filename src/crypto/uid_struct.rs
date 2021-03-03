@@ -14,8 +14,8 @@ pub struct UidStruct {
 impl UidStruct {
     #[new]
     fn new(uid_bytes: [u8; 16]) -> UidStruct {
-        UidStruct{
-            state: zkgroup::crypto::uid_struct::UidStruct::new(uid_bytes)
+        UidStruct {
+            state: zkgroup::crypto::uid_struct::UidStruct::new(uid_bytes),
         }
     }
 

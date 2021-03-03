@@ -12,8 +12,8 @@ pub struct Sho {
 impl Sho {
     #[new]
     fn new(label: &[u8], data: &[u8]) -> Sho {
-        Sho{
-            state: zkgroup::common::sho::Sho::new(label, data)
+        Sho {
+            state: zkgroup::common::sho::Sho::new(label, data),
         }
     }
 
