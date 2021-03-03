@@ -1,0 +1,5 @@
+black
+setuptools
+setuptools-rust
+wheel
+pytest
