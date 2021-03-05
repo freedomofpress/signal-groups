@@ -1,5 +1,4 @@
 use pyo3::prelude::*;
-use pyo3::types::PyBytes;
 
 use crate::common::sho::Sho;
 use crate::crypto::credentials::{BlindedProfileKeyCredential, ProfileKeyCredential};

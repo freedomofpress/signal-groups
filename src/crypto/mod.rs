@@ -1,6 +1,7 @@
 use pyo3::prelude::*;
 
 pub mod credentials;
+pub mod errors;
 pub mod profile_key_commitment;
 pub mod profile_key_credential_request;
 pub mod profile_key_encryption;
@@ -11,7 +12,7 @@ pub mod uid_encryption;
 pub mod uid_struct;
 
 #[pymodule]
-fn crypto(_py: Python, module: &PyModule) -> PyResult<()> {
+fn crypto(py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<credentials::SystemParams>()?;
     module.add_class::<credentials::KeyPair>()?;
     module.add_class::<credentials::PublicKey>()?;
@@ -23,7 +24,18 @@ fn crypto(_py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<profile_key_credential_request::PublicKey>()?;
     module.add_class::<profile_key_credential_request::CiphertextWithSecretNonce>()?;
     module.add_class::<profile_key_credential_request::Ciphertext>()?;
+    module.add_class::<profile_key_commitment::SystemParams>()?;
+    module.add_class::<profile_key_commitment::CommitmentWithSecretNonce>()?;
+    module.add_class::<profile_key_commitment::Commitment>()?;
+    module.add_class::<profile_key_encryption::SystemParams>()?;
+    module.add_class::<profile_key_encryption::KeyPair>()?;
+    module.add_class::<profile_key_encryption::PublicKey>()?;
+    module.add_class::<profile_key_encryption::Ciphertext>()?;
     module.add_class::<uid_struct::UidStruct>()?;
     module.add_class::<profile_key_struct::ProfileKeyStruct>()?;
+    module.add(
+        "ZkGroupException",
+        py.get_type::<errors::ZkGroupException>(),
+    )?;
     Ok(())
 }

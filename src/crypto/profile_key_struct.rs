@@ -1,9 +1,6 @@
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 
-use crate::common::sho::Sho;
-use crate::crypto::uid_struct::UidStruct;
-
 use zkgroup;
 
 //TODO: Default, PartialEq, Serialize, Deserialize
@@ -16,7 +13,10 @@ pub struct ProfileKeyStruct {
 #[pymethods]
 impl ProfileKeyStruct {
     #[new]
-    fn new(profile_key_bytes: [u8; 32], uid_bytes: [u8; 16]) -> ProfileKeyStruct {
+    fn new(
+        profile_key_bytes: zkgroup::common::simple_types::ProfileKeyBytes,
+        uid_bytes: zkgroup::common::simple_types::UidBytes,
+    ) -> ProfileKeyStruct {
         ProfileKeyStruct {
             state: zkgroup::crypto::profile_key_struct::ProfileKeyStruct::new(
                 profile_key_bytes,
