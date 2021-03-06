@@ -31,13 +31,19 @@ fn crypto(py: Python, module: &PyModule) -> PyResult<()> {
     module.add_class::<profile_key_encryption::KeyPair>()?;
     module.add_class::<profile_key_encryption::PublicKey>()?;
     module.add_class::<profile_key_encryption::Ciphertext>()?;
+    module.add_class::<profile_key_struct::ProfileKeyStruct>()?;
     module.add_class::<proofs::AuthCredentialIssuanceProof>()?;
     module.add_class::<proofs::ProfileKeyCredentialRequestProof>()?;
     module.add_class::<proofs::ProfileKeyCredentialIssuanceProof>()?;
     module.add_class::<proofs::AuthCredentialPresentationProof>()?;
     module.add_class::<proofs::ProfileKeyCredentialPresentationProof>()?;
+    module.add_class::<signature::KeyPair>()?;
+    module.add_class::<signature::PublicKey>()?;
+    module.add_class::<uid_encryption::SystemParams>()?;
+    module.add_class::<uid_encryption::KeyPair>()?;
+    module.add_class::<uid_encryption::PublicKey>()?;
+    module.add_class::<uid_encryption::Ciphertext>()?;
     module.add_class::<uid_struct::UidStruct>()?;
-    module.add_class::<profile_key_struct::ProfileKeyStruct>()?;
     module.add(
         "ZkGroupException",
         py.get_type::<errors::ZkGroupException>(),
