@@ -65,3 +65,10 @@ impl CommitmentWithSecretNonce {
 
     // TODO: skip calc_j3 as part of public API?
 }
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<SystemParams>()?;
+    module.add_class::<CommitmentWithSecretNonce>()?;
+    module.add_class::<Commitment>()?;
+    Ok(())
+}

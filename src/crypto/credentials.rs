@@ -125,3 +125,14 @@ impl BlindedProfileKeyCredentialWithSecretNonce {
         }
     }
 }
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<SystemParams>()?;
+    module.add_class::<KeyPair>()?;
+    module.add_class::<PublicKey>()?;
+    module.add_class::<AuthCredential>()?;
+    module.add_class::<ProfileKeyCredential>()?;
+    module.add_class::<BlindedProfileKeyCredentialWithSecretNonce>()?;
+    module.add_class::<BlindedProfileKeyCredential>()?;
+    Ok(())
+}

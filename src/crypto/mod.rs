@@ -13,40 +13,68 @@ pub mod uid_struct;
 
 #[pymodule]
 fn crypto(py: Python, module: &PyModule) -> PyResult<()> {
-    module.add_class::<credentials::SystemParams>()?;
-    module.add_class::<credentials::KeyPair>()?;
-    module.add_class::<credentials::PublicKey>()?;
-    module.add_class::<credentials::AuthCredential>()?;
-    module.add_class::<credentials::ProfileKeyCredential>()?;
-    module.add_class::<credentials::BlindedProfileKeyCredentialWithSecretNonce>()?;
-    module.add_class::<credentials::BlindedProfileKeyCredential>()?;
-    module.add_class::<profile_key_credential_request::KeyPair>()?;
-    module.add_class::<profile_key_credential_request::PublicKey>()?;
-    module.add_class::<profile_key_credential_request::CiphertextWithSecretNonce>()?;
-    module.add_class::<profile_key_credential_request::Ciphertext>()?;
-    module.add_class::<profile_key_commitment::SystemParams>()?;
-    module.add_class::<profile_key_commitment::CommitmentWithSecretNonce>()?;
-    module.add_class::<profile_key_commitment::Commitment>()?;
-    module.add_class::<profile_key_encryption::SystemParams>()?;
-    module.add_class::<profile_key_encryption::KeyPair>()?;
-    module.add_class::<profile_key_encryption::PublicKey>()?;
-    module.add_class::<profile_key_encryption::Ciphertext>()?;
-    module.add_class::<profile_key_struct::ProfileKeyStruct>()?;
-    module.add_class::<proofs::AuthCredentialIssuanceProof>()?;
-    module.add_class::<proofs::ProfileKeyCredentialRequestProof>()?;
-    module.add_class::<proofs::ProfileKeyCredentialIssuanceProof>()?;
-    module.add_class::<proofs::AuthCredentialPresentationProof>()?;
-    module.add_class::<proofs::ProfileKeyCredentialPresentationProof>()?;
-    module.add_class::<signature::KeyPair>()?;
-    module.add_class::<signature::PublicKey>()?;
-    module.add_class::<uid_encryption::SystemParams>()?;
-    module.add_class::<uid_encryption::KeyPair>()?;
-    module.add_class::<uid_encryption::PublicKey>()?;
-    module.add_class::<uid_encryption::Ciphertext>()?;
-    module.add_class::<uid_struct::UidStruct>()?;
+    let credentials_submod = PyModule::new(py, "credentials")?;
+    credentials::init_submodule(credentials_submod)?;
+    module.add_submodule(credentials_submod)?;
+
+    let profile_key_credential_request_submod =
+        PyModule::new(py, "profile_key_credential_request")?;
+    profile_key_credential_request::init_submodule(profile_key_credential_request_submod)?;
+    module.add_submodule(profile_key_credential_request_submod)?;
+
+    let profile_key_commitment_submod = PyModule::new(py, "profile_key_commitment")?;
+    profile_key_commitment::init_submodule(profile_key_commitment_submod)?;
+    module.add_submodule(profile_key_commitment_submod)?;
+
+    let profile_key_encryption_submod = PyModule::new(py, "profile_key_encryption")?;
+    profile_key_encryption::init_submodule(profile_key_encryption_submod)?;
+    module.add_submodule(profile_key_encryption_submod)?;
+
+    let profile_key_struct_submod = PyModule::new(py, "profile_key_struct")?;
+    profile_key_struct::init_submodule(profile_key_struct_submod)?;
+    module.add_submodule(profile_key_struct_submod)?;
+
+    let proofs_submod = PyModule::new(py, "proofs")?;
+    proofs::init_submodule(proofs_submod)?;
+    module.add_submodule(proofs_submod)?;
+
+    let signature_submod = PyModule::new(py, "signature")?;
+    signature::init_submodule(signature_submod)?;
+    module.add_submodule(signature_submod)?;
+
+    let uid_encryption_submod = PyModule::new(py, "uid_encryption")?;
+    uid_encryption::init_submodule(uid_encryption_submod)?;
+    module.add_submodule(uid_encryption_submod)?;
+
+    let uid_struct_submod = PyModule::new(py, "uid_struct")?;
+    uid_struct::init_submodule(uid_struct_submod)?;
+    module.add_submodule(uid_struct_submod)?;
+
     module.add(
         "ZkGroupException",
         py.get_type::<errors::ZkGroupException>(),
     )?;
+
+    // Workaround to enable imports from submodules. Upstream issue: pyo3 issue #759
+    // https://github.com/PyO3/pyo3/issues/759#issuecomment-653964601
+    let mods = [
+        "credentials",
+        "profile_key_credential_request",
+        "profile_key_commitment",
+        "profile_key_encryption",
+        "profile_key_struct",
+        "proofs",
+        "signature",
+        "uid_encryption",
+        "uid_struct",
+    ];
+    for module_name in mods.iter() {
+        let cmd = format!(
+            "import sys; sys.modules['signal_groups.crypto.{}'] = {}",
+            module_name, module_name
+        );
+        py.run(&cmd, None, Some(module.dict()))?;
+    }
+
     Ok(())
 }

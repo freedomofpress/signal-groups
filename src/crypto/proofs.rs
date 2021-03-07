@@ -267,3 +267,12 @@ impl ProfileKeyCredentialPresentationProof {
         }
     }
 }
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<AuthCredentialIssuanceProof>()?;
+    module.add_class::<ProfileKeyCredentialRequestProof>()?;
+    module.add_class::<ProfileKeyCredentialIssuanceProof>()?;
+    module.add_class::<AuthCredentialPresentationProof>()?;
+    module.add_class::<ProfileKeyCredentialPresentationProof>()?;
+    Ok(())
+}

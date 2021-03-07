@@ -42,3 +42,9 @@ impl KeyPair {
         }
     }
 }
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<KeyPair>()?;
+    module.add_class::<PublicKey>()?;
+    Ok(())
+}

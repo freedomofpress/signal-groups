@@ -31,3 +31,8 @@ impl ProfileKeyStruct {
         PyBytes::new(py, &self.state.to_bytes()).into()
     }
 }
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<ProfileKeyStruct>()?;
+    Ok(())
+}
