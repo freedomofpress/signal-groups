@@ -23,6 +23,10 @@ setup(
     packages=["signal_groups"],
     rust_extensions=[
         RustExtension(
+            'signal_groups.api',
+            'Cargo.toml',
+            binding=Binding.PyO3),
+        RustExtension(
             'signal_groups.common',
             'Cargo.toml',
             binding=Binding.PyO3),
