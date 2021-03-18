@@ -6,6 +6,7 @@ edition = "2018"
 license = "AGPL-3.0-only"
 
 [dependencies]
+bincode = "1.2.1"
 rand = "0.7.3"
 zkgroup = { git = "https://github.com/redshiftzero/zkgroup", rev="ea80ccc47bc8363d15906fb0f57588e940b589a0" }
 pyo3 = { version = "0.12.4", features = ["extension-module"] }

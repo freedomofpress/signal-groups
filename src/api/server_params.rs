@@ -1,6 +1,8 @@
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
+use pyo3::exceptions::PyValueError;
 
+use serde::{Deserialize, Serialize};
 use std::convert::TryInto;
 
 use crate::api::{auth, groups, profiles};
@@ -8,16 +10,14 @@ use crate::crypto::errors::ZkGroupError;
 
 use zkgroup;
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ServerSecretParams {
     pub state: zkgroup::api::server_params::ServerSecretParams,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ServerPublicParams {
     pub state: zkgroup::api::server_params::ServerPublicParams,
 }
@@ -28,6 +28,19 @@ impl ServerSecretParams {
     fn generate(randomness: zkgroup::common::simple_types::RandomnessBytes) -> Self {
         ServerSecretParams {
             state: zkgroup::api::server_params::ServerSecretParams::generate(randomness),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 
@@ -113,6 +126,19 @@ impl ServerSecretParams {
 // arg of type [u8; 64]
 #[pymethods]
 impl ServerPublicParams {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+
     fn verify_signature(
         &self,
         message: &[u8],
@@ -122,7 +148,10 @@ impl ServerPublicParams {
         let mut signature = Vec::with_capacity(64);
         signature.clone_from_slice(&signature_1);
         signature.clone_from_slice(&signature_2);
-        match self.state.verify_signature(message, signature.try_into().unwrap()) {
+        match self
+            .state
+            .verify_signature(message, signature.try_into().unwrap())
+        {
             Ok(_) => Ok(()),
             Err(err) => Err(ZkGroupError::new(err).into()),
         }

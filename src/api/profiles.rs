@@ -1,27 +1,31 @@
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
+
+use serde::{Deserialize, Serialize};
 
 // use crate::crypto::profile_key_struct::ProfileKeyStruct;
 
 use crate::api::groups;
+use crate::crypto::errors::ZkGroupError;
+
 use zkgroup;
 
-//TODO: Default, Serialize, Deserialize, PartialEq
+//TODO: Default, PartialEq
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ProfileKey {
     pub state: zkgroup::api::profiles::ProfileKey,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCommitment {
     pub state: zkgroup::api::profiles::ProfileKeyCommitment,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
+#[derive(Serialize, Deserialize)]
 pub struct ProfileKeyCredentialPresentation {
     pub state: zkgroup::api::profiles::ProfileKeyCredentialPresentation,
 }
@@ -39,16 +43,45 @@ impl ProfileKeyCredentialPresentation {
             state: self.state.get_profile_key_ciphertext(),
         }
     }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
+#[derive(Serialize, Deserialize)]
 pub struct ProfileKeyCredentialRequest {
     pub state: zkgroup::api::profiles::ProfileKeyCredentialRequest,
 }
 
-//TODO: Serialize, Deserialize
+#[pymethods]
+impl ProfileKeyCredentialRequest {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+}
+
 #[pyclass]
+#[derive(Serialize, Deserialize)]
 pub struct ProfileKeyCredentialRequestContext {
     pub state: zkgroup::api::profiles::ProfileKeyCredentialRequestContext,
 }
@@ -60,28 +93,78 @@ impl ProfileKeyCredentialRequestContext {
             state: self.state.get_request(),
         }
     }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
+#[derive(Serialize, Deserialize)]
 pub struct ProfileKeyCredentialResponse {
     pub state: zkgroup::api::profiles::ProfileKeyCredentialResponse,
 }
 
-//TODO: Serialize, Deserialize
+#[pymethods]
+impl ProfileKeyCredentialResponse {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+}
+
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCredential {
     pub state: zkgroup::api::profiles::ProfileKeyCredential,
 }
 
+#[pymethods]
+impl ProfileKeyCredential {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+}
+
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize)]
 pub struct ProfileKeyVersion {
     pub state: zkgroup::api::profiles::ProfileKeyVersion,
 }
 
-// TODO: Serialize on ProfileKeyVersion
+#[pymethods]
+impl ProfileKeyVersion {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+}
 
 #[pymethods]
 impl ProfileKey {
@@ -118,6 +201,35 @@ impl ProfileKey {
     ) -> ProfileKeyVersion {
         ProfileKeyVersion {
             state: self.state.get_profile_key_version(uid_bytes),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+}
+
+#[pymethods]
+impl ProfileKeyCommitment {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 }

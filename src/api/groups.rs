@@ -1,5 +1,8 @@
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
+
+use serde::{Deserialize, Serialize};
 
 use crate::api::profiles;
 use crate::crypto;
@@ -7,39 +10,69 @@ use crate::crypto::errors::ZkGroupError;
 
 use zkgroup;
 
-//TODO: Default, Serialize, Deserialize, PartialEq
+//TODO: Default, PartialEq
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct UuidCiphertext {
     pub state: zkgroup::api::groups::UuidCiphertext,
 }
 
-//TODO: Default, Serialize, Deserialize, PartialEq
+//TODO: Default, PartialEq
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCiphertext {
     pub state: zkgroup::api::groups::ProfileKeyCiphertext,
 }
 
-//TODO: Default, Serialize, Deserialize
+//TODO: Default
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct GroupMasterKey {
     pub state: zkgroup::api::groups::GroupMasterKey,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct GroupSecretParams {
     pub state: zkgroup::api::groups::GroupSecretParams,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize)]
 pub struct GroupPublicParams {
     pub state: zkgroup::api::groups::GroupPublicParams,
+}
+
+#[pymethods]
+impl ProfileKeyCiphertext {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
+}
+
+#[pymethods]
+impl UuidCiphertext {
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
 #[pymethods]
@@ -50,6 +83,19 @@ impl GroupMasterKey {
             state: zkgroup::api::groups::GroupMasterKey::new(bytes),
         }
     }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
 #[pymethods]
@@ -58,6 +104,19 @@ impl GroupSecretParams {
     fn generate(randomness: zkgroup::common::simple_types::RandomnessBytes) -> Self {
         GroupSecretParams {
             state: zkgroup::api::groups::GroupSecretParams::generate(randomness),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 
@@ -165,6 +224,19 @@ impl GroupSecretParams {
 impl GroupPublicParams {
     fn get_group_identifier(&self) -> zkgroup::common::simple_types::GroupIdentifierBytes {
         self.state.get_group_identifier()
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
     }
 }
 

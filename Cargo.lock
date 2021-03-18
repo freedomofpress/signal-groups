@@ -603,6 +603,7 @@ dependencies = [
 name = "signal-groups"
 version = "0.2.2"
 dependencies = [
+ "bincode",
  "pyo3",
  "rand",
  "serde",
