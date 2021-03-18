@@ -1,4 +1,8 @@
+use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
+use pyo3::types::PyBytes;
+
+use serde::{Deserialize, Serialize};
 
 use zkgroup;
 
@@ -10,37 +14,32 @@ use crate::crypto::{
     uid_encryption,
 };
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct AuthCredentialIssuanceProof {
     pub state: zkgroup::crypto::proofs::AuthCredentialIssuanceProof,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCredentialRequestProof {
     pub state: zkgroup::crypto::proofs::ProfileKeyCredentialRequestProof,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCredentialIssuanceProof {
     pub state: zkgroup::crypto::proofs::ProfileKeyCredentialIssuanceProof,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct AuthCredentialPresentationProof {
     pub state: zkgroup::crypto::proofs::AuthCredentialPresentationProof,
 }
 
-//TODO: Serialize, Deserialize
 #[pyclass]
-#[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ProfileKeyCredentialPresentationProof {
     pub state: zkgroup::crypto::proofs::ProfileKeyCredentialPresentationProof,
 }
@@ -85,6 +84,19 @@ impl AuthCredentialIssuanceProof {
             Err(err) => Err(ZkGroupError::new(err).into()),
         }
     }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
 #[pymethods]
@@ -120,6 +132,19 @@ impl ProfileKeyCredentialRequestProof {
         {
             Ok(_) => Ok(()),
             Err(err) => Err(ZkGroupError::new(err).into()),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 }
@@ -168,6 +193,19 @@ impl ProfileKeyCredentialIssuanceProof {
             Err(err) => Err(ZkGroupError::new(err).into()),
         }
     }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
+        }
+    }
 }
 
 #[pymethods]
@@ -212,6 +250,19 @@ impl AuthCredentialPresentationProof {
         ) {
             Ok(_) => Ok(()),
             Err(err) => Err(ZkGroupError::new(err).into()),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 }
@@ -264,6 +315,19 @@ impl ProfileKeyCredentialPresentationProof {
         ) {
             Ok(_) => Ok(()),
             Err(err) => Err(ZkGroupError::new(err).into()),
+        }
+    }
+
+    fn serialize(&self, py: Python) -> Result<PyObject, ZkGroupError> {
+        let bytes = bincode::serialize(&self).expect("could not serialize to bytes");
+        Ok(PyBytes::new(py, &bytes).into())
+    }
+
+    #[staticmethod]
+    fn deserialize(bytes: &[u8]) -> PyResult<Self> {
+        match bincode::deserialize(bytes) {
+            Ok(result) => Ok(result),
+            Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
     }
 }
