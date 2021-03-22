@@ -146,8 +146,8 @@ impl ServerPublicParams {
         signature_2: [u8; 32],
     ) -> Result<(), ZkGroupError> {
         let mut signature = Vec::with_capacity(64);
-        signature.clone_from_slice(&signature_1);
-        signature.clone_from_slice(&signature_2);
+        signature.extend_from_slice(&signature_1);
+        signature.extend_from_slice(&signature_2);
         match self
             .state
             .verify_signature(message, signature.try_into().unwrap())

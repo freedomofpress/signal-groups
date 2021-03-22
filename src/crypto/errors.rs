@@ -2,6 +2,7 @@ use pyo3::create_exception;
 use pyo3::prelude::*;
 use pyo3::PyErr;
 
+use std::fmt::Write;
 use std::{convert, fmt};
 
 use zkgroup;
@@ -25,7 +26,9 @@ impl fmt::Display for ZkGroupError {
 
 impl convert::From<ZkGroupError> for PyErr {
     fn from(err: ZkGroupError) -> Self {
-        ZkGroupException::new_err(err)
+        let mut output = String::new();
+        write!(&mut output, "{}", err);
+        ZkGroupException::new_err(output).unwrap()
     }
 }
 

@@ -3,6 +3,7 @@ use pyo3::prelude::*;
 use pyo3::types::PyBytes;
 
 use serde::{Deserialize, Serialize};
+use std::convert::TryInto;
 
 use zkgroup;
 
@@ -72,6 +73,20 @@ impl PublicKey {
             Ok(result) => Ok(result),
             Err(_) => Err(PyValueError::new_err("cannot deserialize")),
         }
+    }
+
+    // TODO: fix this - i.e. take [u8; 64] instead of two [u8; 32]
+    fn verify(
+        &self,
+        message: &[u8],
+        signature_1: [u8; 32],
+        signature_2: [u8; 32],
+    ) -> Result<(), ZkGroupError> {
+        let mut signature: Vec<u8> = Vec::with_capacity(64);
+        signature.extend_from_slice(&signature_1);
+        signature.extend_from_slice(&signature_2);
+        let signature_res: [u8; 64] = signature.try_into().unwrap();
+        Ok(self.state.verify(message, signature_res)?)
     }
 }
 
