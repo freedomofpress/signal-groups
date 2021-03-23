@@ -8,6 +8,14 @@ See [here](https://cryptography.io/en/latest/limitations.html) for a fundamental
 
 ⚠️USE AT YOUR OWN RISK!⚠️
 
+## Installation
+
+To use the wheel distributions you do not need the Rust toolchain installed. To install, run:
+
+```
+pip install signal-groups
+```
+
 ## Developer Getting Started
 
 You will need both [Rust](https://rustup.rs/) and Python 3.7+ installed on your system.
