@@ -1,5 +1,13 @@
 # signal-groups
 
+[![CircleCI](https://circleci.com/gh/freedomofpress/signal-groups.svg?style=svg)](https://circleci.com/gh/freedomofpress/signal-groups)
+
+Experimental Python bindings to Signal's v2 groups implementation [`zkgroup`](https://github.com/signalapp/zkgroup).
+This project provides a Rust extension using [PyO3](https://pyo3.rs/) to define a `signal_groups` Python module.
+See [here](https://cryptography.io/en/latest/limitations.html) for a fundamental limitation storing secrets in Python-allocated memory.
+
+⚠️USE AT YOUR OWN RISK!⚠️
+
 ## Developer Getting Started
 
 You will need both [Rust](https://rustup.rs/) and Python 3.7+ installed on your system.
