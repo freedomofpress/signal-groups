@@ -11,8 +11,8 @@ pub struct Sho {
 #[pymethods]
 impl Sho {
     #[new]
-    fn new(label: &[u8], data: &[u8]) -> Sho {
-        Sho {
+    fn new(label: &[u8], data: &[u8]) -> Self {
+        Self {
             state: zkgroup::common::sho::Sho::new(label, data),
         }
     }
@@ -23,4 +23,9 @@ impl Sho {
     }
 
     // TODO: Does get_point, get_point_single_elligator, get_scalar need to be part of the public API?
+}
+
+pub fn init_submodule(module: &PyModule) -> PyResult<()> {
+    module.add_class::<Sho>()?;
+    Ok(())
 }

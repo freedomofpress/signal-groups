@@ -4,10 +4,10 @@ use pyo3::types::PyBytes;
 
 use serde::{Deserialize, Serialize};
 
-use crate::common::sho::Sho;
 use crate::crypto::credentials::{BlindedProfileKeyCredential, ProfileKeyCredential};
 use crate::crypto::errors::ZkGroupError;
 use crate::crypto::profile_key_struct::ProfileKeyStruct;
+use crate::crypto::sho::Sho;
 
 use zkgroup;
 

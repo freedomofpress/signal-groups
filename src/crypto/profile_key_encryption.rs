@@ -6,9 +6,9 @@ use serde::{Deserialize, Serialize};
 
 use zkgroup;
 
-use crate::common::sho::Sho;
 use crate::crypto::errors::ZkGroupError;
 use crate::crypto::profile_key_struct::ProfileKeyStruct;
+use crate::crypto::sho::Sho;
 
 //TODO: PartialEq
 #[pyclass]

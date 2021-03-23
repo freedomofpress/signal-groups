@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use zkgroup;
 
-use crate::common::sho::Sho;
 use crate::crypto::errors::ZkGroupError;
+use crate::crypto::sho::Sho;
 use crate::crypto::uid_struct::UidStruct;
 use crate::crypto::{
     credentials, profile_key_commitment, profile_key_credential_request, profile_key_encryption,

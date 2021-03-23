@@ -27,10 +27,6 @@ setup(
             'Cargo.toml',
             binding=Binding.PyO3),
         RustExtension(
-            'signal_groups.common',
-            'Cargo.toml',
-            binding=Binding.PyO3),
-        RustExtension(
             'signal_groups.crypto',
             'Cargo.toml',
             binding=Binding.PyO3),

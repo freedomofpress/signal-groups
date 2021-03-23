@@ -1,4 +1,4 @@
-from signal_groups.common import Sho
+from signal_groups.crypto.sho import Sho
 from signal_groups.crypto.profile_key_struct import ProfileKeyStruct
 from signal_groups.crypto.profile_key_encryption import (
     Ciphertext,

@@ -1,7 +1,7 @@
 import pytest
 
-from signal_groups.common import Sho
-from signal_groups.crypto import ZkGroupException
+from signal_groups.crypto.sho import Sho
+from signal_groups.crypto.errors import ZkGroupException
 from signal_groups.crypto.signature import KeyPair
 
 from tests.constants import TEST_32

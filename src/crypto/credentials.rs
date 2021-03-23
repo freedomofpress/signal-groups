@@ -4,9 +4,9 @@ use pyo3::types::PyBytes;
 
 use serde::{Deserialize, Serialize};
 
-use crate::common::sho::Sho;
 use crate::crypto::errors::ZkGroupError;
 use crate::crypto::profile_key_credential_request;
+use crate::crypto::sho::Sho;
 use crate::crypto::uid_struct::UidStruct;
 
 use zkgroup;

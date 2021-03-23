@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 
 use zkgroup;
 
-use crate::common::sho::Sho;
 use crate::crypto::errors::ZkGroupError;
+use crate::crypto::sho::Sho;
 use crate::crypto::uid_struct::UidStruct;
 
 //TODO: PartialEq

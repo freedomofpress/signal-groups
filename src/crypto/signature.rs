@@ -7,8 +7,8 @@ use std::convert::TryInto;
 
 use zkgroup;
 
-use crate::common::sho::Sho;
 use crate::crypto::errors::ZkGroupError;
+use crate::crypto::sho::Sho;
 
 //TODO: PartialEq
 #[pyclass]

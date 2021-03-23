@@ -1,15 +1,15 @@
-from signal_groups.common import Sho
 from signal_groups.crypto import (
     profile_key_credential_request,
     profile_key_struct,
     profile_key_commitment,
+    sho,
 )
 
 from tests.constants import TEST_16, TEST_32
 
 
 def test_request():
-    transcript = Sho(b"Test_Profile_Key_Credential_Request", b"")
+    transcript = sho.Sho(b"Test_Profile_Key_Credential_Request", b"")
 
     blind_key_pair = profile_key_credential_request.KeyPair.generate(transcript)
 

@@ -1,7 +1,7 @@
 import pytest
 
-from signal_groups.common import Sho
-from signal_groups.crypto import ZkGroupException
+from signal_groups.crypto.sho import Sho
+from signal_groups.crypto.errors import ZkGroupException
 from signal_groups.crypto.uid_struct import UidStruct
 from signal_groups.crypto.uid_encryption import (
     KeyPair,

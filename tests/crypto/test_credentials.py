@@ -1,7 +1,7 @@
 import pytest
 
-from signal_groups.common import Sho
-from signal_groups.crypto import credentials, uid_struct, proofs, ZkGroupException
+from signal_groups.crypto.errors import ZkGroupException
+from signal_groups.crypto import credentials, uid_struct, proofs, sho
 
 from tests.constants import TEST_16, TEST_32
 
@@ -24,7 +24,7 @@ def test_system():
 
 
 def test_mac():
-    transcript = Sho(b"Test_Credentials", b"")
+    transcript = sho.Sho(b"Test_Credentials", b"")
     NUM_AUTH_CRED_ATTRIBUTES = 3
     keypair = credentials.KeyPair.generate(transcript, NUM_AUTH_CRED_ATTRIBUTES)
 

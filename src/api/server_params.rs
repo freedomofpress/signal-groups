@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 use std::convert::TryInto;
 
 use crate::api::{auth, groups, profiles};
-use crate::crypto::errors::ZkGroupError;
+use crate::api::errors::ZkGroupError;
 
 use zkgroup;
 

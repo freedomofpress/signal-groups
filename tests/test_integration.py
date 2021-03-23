@@ -3,7 +3,7 @@ import pytest
 from signal_groups.api.server_params import ServerSecretParams
 from signal_groups.api.groups import GroupMasterKey, GroupSecretParams
 from signal_groups.api.profiles import ProfileKey
-from signal_groups.crypto import ZkGroupException
+from signal_groups.api.errors import ZkGroupException
 
 from tests.constants import TEST_16, TEST_32, TEST_32_1
 
