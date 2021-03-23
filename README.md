@@ -9,9 +9,10 @@ To install the project in your virtualenv:
 pip install -r requirements.txt
 python setup.py develop
 ```
+
 Then run the tests via `pytest -v tests/` to confirm all is working.
-Tests are ported to Python from the upstream crate.
-You can use the tests as a reference for how to use the library.
+Tests are (mostly) ported to Python from the upstream crate.
+You can use the tests as a reference for how to use the library (start with the integration tests).
 
 When developing, simply run `python setup.py develop` as you make changes to rebuild the library.
 This script will handle compilation on the Rust side.
