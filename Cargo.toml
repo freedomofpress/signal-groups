@@ -8,7 +8,7 @@ license = "AGPL-3.0-only"
 [dependencies]
 bincode = "1.2.1"
 rand = "0.7.3"
-zkgroup = { git = "https://github.com/redshiftzero/zkgroup", rev="ea80ccc47bc8363d15906fb0f57588e940b589a0" }
+zkgroup = { git = "https://github.com/signalapp/zkgroup", rev="ff26ac3679329e182772eed3f51797d91f963c3b" }
 pyo3 = { version = "0.12.4", features = ["extension-module"] }
 serde = { version = "1.0.106", features = ["derive"] }
 
